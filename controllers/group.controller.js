@@ -9,8 +9,13 @@ const pickBody = (body) =>
 
 module.exports.createGroup = async (req, res, next) => {
   try {
-    const { body } = req;
+    const {
+      body,
+      file: { filename },
+    } = req;
     const values = pickBody(body);
+    values.imagePath = filename;
+    console.log(values);
     const newGroup = await Group.create(values);
 
     //find user
@@ -22,8 +27,6 @@ module.exports.createGroup = async (req, res, next) => {
     if (!user) {
       return next(createError(404, "User not found"));
     }
-    //connect user with group
-    //await user.addGroup(newGroup);
     await newGroup.addUser(user);
 
     res.status(201).send({ data: newGroup });
@@ -44,7 +47,7 @@ module.exports.addImage = async (req, res, next) => {
       },
       {
         where: { id: idGroup },
-        returning:true
+        returning: true,
       }
     );
     res.status(200).send({ data: { groupUpdated } });
@@ -128,6 +131,47 @@ module.exports.addUserAtGroup = async (req, res, next) => {
     //connect user to group
     await group.addUser(user);
     res.status(200).send({ data: group });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//delete - delete
+module.exports.deleteGroupByPk = async (req, res, next) => {
+  try {
+    const { groupInstance } = req;
+    await groupInstance.destroy();
+    res.status(200).send({ data: groupInstance });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//count users in group - get
+module.exports.countUsersInGroup = async (req, res, next) => {
+  try {
+    const { groupInstance } = req;
+    const count = await groupInstance.countUsers();
+    console.log(count);
+    res.status(200).send({ data: count });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//update - put
+module.exports.updateGroup = async (req, res, next) => {
+  try {
+    const {
+      body,
+      groupInstance,
+      file: { filename },
+    } = req;
+    const updatedGroup = await groupInstance.update(
+      { ...body, imagePath: filename },
+      { returning: true }
+    );
+    res.status(200).send({ data: { updatedGroup } });
   } catch (error) {
     next(error);
   }
