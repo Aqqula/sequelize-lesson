@@ -1,0 +1,11 @@
+PUT http://localhost:3000/api/users/1/static HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstName":"Eliza",
+    "lastName":"Rob",
+    "email":"Eliz@gmail.com",
+    "password":"1231223",
+    "birthday":"1983-12-18",
+    "isMale":true
+}

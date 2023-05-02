@@ -1,0 +1,17 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "sequelize_lesson",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "sequelize_lesson_test",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {}
+}

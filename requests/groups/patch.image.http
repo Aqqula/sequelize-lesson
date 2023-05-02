@@ -1,0 +1,2 @@
+PATCH http://localhost:3000/api/groups/4/image HTTP/1.1
+Content-Type:application/json
